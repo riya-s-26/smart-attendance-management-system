@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Student Attendance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <span class="topbar-icon">✅</span>
+        <div>
+            <h2>Mark Student Attendance</h2>
+            <div class="subtitle">Select class and mark attendance</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+
+    {% if message %}
+        <div class="msg" style="background:#fef3c7; color:#92400e; border-color:#fcd34d;">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('mark_student_attendance') }}">
+
+        <div class="filter-form">
+            <div class="field">
+                <label>Course</label>
+                <select name="course" required>
+                    <option value="">Select Course</option>
+                    {% for course in courses %}
+                        <option value="{{ course }}" {% if course == sel_course %}selected{% endif %}>{{ course }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Year</label>
+                <select name="year" required>
+                    <option value="">Select Year</option>
+                    <option value="FY" {% if sel_year == 'FY' %}selected{% endif %}>FY</option>
+                    <option value="SY" {% if sel_year == 'SY' %}selected{% endif %}>SY</option>
+                    <option value="TY" {% if sel_year == 'TY' %}selected{% endif %}>TY</option>
+                    <option value="Final Year" {% if sel_year == 'Final Year' %}selected{% endif %}>Final Year</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Batch / Division</label>
+                <select name="batch" required>
+                    <option value="">Select Batch</option>
+                    <option value="A" {% if sel_batch == 'A' %}selected{% endif %}>A</option>
+                    <option value="B" {% if sel_batch == 'B' %}selected{% endif %}>B</option>
+                    <option value="C" {% if sel_batch == 'C' %}selected{% endif %}>C</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Date</label>
+                <input type="date" name="date" value="{{ sel_date }}" required>
+            </div>
+
+            <div class="field">
+                <label>Lecture Type</label>
+                <select name="lecture_type" required>
+                    <option {% if sel_lecture_type == 'Lecture' %}selected{% endif %}>Lecture</option>
+                    <option {% if sel_lecture_type == 'Practical' %}selected{% endif %}>Practical</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Lecture Number</label>
+                <input type="number" name="lecture_number" min="1" placeholder="e.g. 1"
+                       value="{{ sel_lecture_number }}" required>
+            </div>
+
+            <div class="field">
+                <label>&nbsp;</label>
+                <button type="submit" name="action" value="fetch">Show Students</button>
+            </div>
+        </div>
+
+        <h3>Students</h3>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                </tr>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.roll }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>
+                        <select name="status_{{ student.id }}">
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        {% if students %}
+            <br>
+            <button type="submit" name="action" value="save">💾 Save Attendance</button>
+        {% endif %}
+
+    </form>
+
+</div>
+
+<a href="{{ url_for('dashboard') }}" class="back-button">Dashboard</a>
+
+</body>
+</html>

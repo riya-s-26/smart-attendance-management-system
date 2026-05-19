@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <span class="topbar-icon">🎓</span>
+        <div>
+            <h1>Attendance System</h1>
+            <div class="subtitle">Dashboard Overview</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+
+    <div class="dashboard">
+        <div class="card">
+            <h2>Total Students</h2>
+            <p>{{ total_students }}</p>
+        </div>
+        <div class="card">
+            <h2>Total Teachers</h2>
+            <p>{{ total_teachers }}</p>
+        </div>
+        <div class="card">
+            <h2>Today's Attendance</h2>
+            <p style="font-size:1.1rem;">
+                <strong>Students: {{ student_percent }}%</strong>
+                <strong>Teachers: {{ teacher_percent }}%</strong>
+            </p>
+        </div>
+    </div>
+
+    <div class="nav">
+        <a href="{{ url_for('add_student') }}">➕ Add Student</a>
+        <a href="{{ url_for('add_teacher') }}">➕ Add Teacher</a>
+        <a href="{{ url_for('mark_student_attendance') }}">✅ Student Attendance</a>
+        <a href="{{ url_for('mark_teacher_attendance') }}">✅ Teacher Attendance</a>
+        <a href="{{ url_for('reports') }}">📊 Reports</a>
+    </div>
+
+</div>
+</body>
+</html>

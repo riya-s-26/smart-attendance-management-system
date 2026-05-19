@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Teacher</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function validateTeacherForm() {
+            var name = document.getElementById("teacher_name").value;
+            var department = document.getElementById("department").value;
+            var subject = document.getElementById("subject").value;
+            var teacherId = document.getElementById("teacher_id").value;
+            var email = document.getElementById("email").value;
+
+            var lettersOnly = /^[A-Za-z\s]+$/;
+            var multiLetters = /^[A-Za-z\s,]+$/;
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+
+            if (!lettersOnly.test(name)) { alert("Teacher Name must contain letters only."); return false; }
+            if (!multiLetters.test(department)) { alert("Department must contain letters only."); return false; }
+            if (!multiLetters.test(subject)) { alert("Subject must contain letters only."); return false; }
+            if (teacherId.trim() === "") { alert("Teacher ID is required."); return false; }
+            if (!emailPattern.test(email)) { alert("Invalid Email format."); return false; }
+            return true;
+        }
+    </script>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <span class="topbar-icon">🎓</span>
+        <div>
+            <h2>Add Teacher</h2>
+            <div class="subtitle">Register a new teacher</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+<div class="form-container">
+
+    {% if message %}
+        <div class="msg">{{ message }}</div>
+    {% endif %}
+
+    <form method="post" onsubmit="return validateTeacherForm();">
+
+        <label>Teacher Name</label>
+        <input type="text" name="name" id="teacher_name" required>
+
+        <label>Department (comma separated if multiple)</label>
+        <input type="text" name="department" id="department" placeholder="e.g. IT, CS" required>
+
+        <label>Subject (comma separated if multiple)</label>
+        <input type="text" name="subject" id="subject" placeholder="e.g. Python, DBMS" required>
+
+        <label>Teacher ID</label>
+        <input type="text" name="teacher_id" id="teacher_id" required>
+
+        <label>Email</label>
+        <input type="email" name="email" id="email" placeholder="example@gmail.com" required>
+
+        <button type="submit">Add Teacher</button>
+
+    </form>
+</div>
+</div>
+
+<a href="{{ url_for('dashboard') }}" class="back-button">Dashboard</a>
+
+</body>
+</html>

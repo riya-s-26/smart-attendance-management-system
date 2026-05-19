@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Teacher Attendance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <span class="topbar-icon">✅</span>
+        <div>
+            <h2>Teacher Attendance</h2>
+            <div class="subtitle">Mark daily teacher attendance</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+
+    {% if message %}
+        <div class="msg" style="background:#fef3c7; color:#92400e; border-color:#fcd34d;">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST">
+
+        <div class="filter-form">
+            <div class="field">
+                <label>Select Date</label>
+                <!-- FIX 2: date is required, prevents blank-date submission -->
+                <input type="date" name="attendance_date" required>
+            </div>
+            <div class="field">
+                <label>&nbsp;</label>
+                <button type="submit">💾 Save Attendance</button>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Teacher Name</th>
+                    <th>Status</th>
+                </tr>
+                {% for teacher in teachers %}
+                <tr>
+                    <td>{{ teacher.name }}</td>
+                    <td>
+                        <select name="status_{{ teacher.id }}">
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </form>
+
+</div>
+
+<a href="{{ url_for('dashboard') }}" class="back-button">Dashboard</a>
+
+</body>
+</html>

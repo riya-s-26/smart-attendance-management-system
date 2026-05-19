@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function toggleOtherCourse() {
+            var course = document.getElementById("course").value;
+            var otherBox = document.getElementById("other_course_box");
+            otherBox.style.display = (course === "Other") ? "block" : "none";
+        }
+
+        function validateForm() {
+            var name = document.getElementById("name").value;
+            var otherCourse = document.getElementById("other_course").value;
+            var email = document.getElementById("email").value;
+            var contact = document.getElementById("contact").value;
+
+            var lettersOnly = /^[A-Za-z\s]+$/;
+            var gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            var numbersOnly = /^[0-9]{10}$/;
+
+            if (name && !lettersOnly.test(name)) {
+                alert("Invalid Student Name: only letters allowed");
+                return false;
+            }
+            if (otherCourse && !lettersOnly.test(otherCourse)) {
+                alert("Invalid Course Name: only letters allowed");
+                return false;
+            }
+            if (!gmailPattern.test(email)) {
+                alert("Invalid Gmail: must end with @gmail.com");
+                return false;
+            }
+            if (!numbersOnly.test(contact)) {
+                alert("Invalid Contact Number: must be exactly 10 digits");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <span class="topbar-icon">🎓</span>
+        <div>
+            <h2>Add Student</h2>
+            <div class="subtitle">Register a new student</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+<div class="form-container">
+
+    {% if message %}
+        <div class="msg">{{ message }}</div>
+    {% endif %}
+
+    <form method="post" onsubmit="return validateForm();">
+
+        <label>Course</label>
+        <select name="course" id="course" onchange="toggleOtherCourse()" required>
+            <option value="">Select Course</option>
+          
+            {% for c in courses %}
+                <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+            <option value="Other">Other</option>
+        </select>
+
+        <div id="other_course_box" style="display:none;">
+            <label>Enter Course Name</label>
+            <input type="text" name="other_course" id="other_course" placeholder="Letters only">
+        </div>
+
+        <label>Year</label>
+        <select name="year" required>
+            <option value="">Select Year</option>
+            <option>FY</option>
+            <option>SY</option>
+            <option>TY</option>
+            <option>Final Year</option>
+        </select>
+
+        <label>Batch</label>
+        <select name="batch" required>
+            <option value="">Select Batch</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+
+        <label>Roll Number</label>
+        <input type="number" name="roll" min="1" required>
+
+        <label>Student Name</label>
+        <input type="text" name="name" id="name" placeholder="Letters only" required>
+
+        <label>Gmail</label>
+        <input type="email" name="email" id="email" placeholder="example@gmail.com" required>
+
+        <label>Contact Number</label>
+        <input type="text" name="contact" id="contact" maxlength="10" placeholder="10 digit number" required>
+
+        <button type="submit">Add Student</button>
+
+    </form>
+</div>
+</div>
+
+<a href="{{ url_for('dashboard') }}" class="back-button">Dashboard</a>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <span class="topbar-icon">📊</span>
+        <div>
+            <h2>Attendance Reports</h2>
+            <div class="subtitle">View attendance statistics by class</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+
+    <form method="POST">
+        <div class="filter-form">
+            <div class="field">
+                <label>Course</label>
+                <select name="course" required>
+                    <option value="">Select Course</option>
+                    {% for course in courses %}
+                        <option value="{{ course }}" {% if course == sel_course %}selected{% endif %}>{{ course }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Year</label>
+                <select name="year" required>
+                    <option value="">Select Year</option>
+                    <option value="FY" {% if sel_year == 'FY' %}selected{% endif %}>FY</option>
+                    <option value="SY" {% if sel_year == 'SY' %}selected{% endif %}>SY</option>
+                    <option value="TY" {% if sel_year == 'TY' %}selected{% endif %}>TY</option>
+                    <option value="Final Year" {% if sel_year == 'Final Year' %}selected{% endif %}>Final Year</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Batch</label>
+                <select name="batch" required>
+                    <option value="">Select Batch</option>
+                    <option value="A" {% if sel_batch == 'A' %}selected{% endif %}>A</option>
+                    <option value="B" {% if sel_batch == 'B' %}selected{% endif %}>B</option>
+                    <option value="C" {% if sel_batch == 'C' %}selected{% endif %}>C</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>&nbsp;</label>
+                <button type="submit">View Report</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Total Lectures</th>
+                <th>Present</th>
+                <th>Overall %</th>
+                <th>Weekly %</th>
+                <th>Monthly %</th>
+            </tr>
+            {% for student in report_data %}
+            <tr>
+                <td>{{ student.roll }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.total }}</td>
+                <td>{{ student.present }}</td>
+                <td>{{ student.overall }}%</td>
+                <td>{{ student.weekly }}%</td>
+                <td>{{ student.monthly }}%</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+<a href="{{ url_for('dashboard') }}" class="back-button">Dashboard</a>
+
+</body>
+</html>
